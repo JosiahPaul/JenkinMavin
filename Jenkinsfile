@@ -8,7 +8,14 @@ pipeline {
                 extensions: [], userRemoteConfigs: [[url: 'https://github.com/JosiahPaul/JenkinMavin.git']]])
             }
         }
-    
+            
+        stage('Scan Code with Mysonar') {
+            steps {
+                withSonarQubeEnv('mysonar') {
+                 sh "mvn -f SampleWebApp/pom.xml sonar:sonar"   
+                }
+            }
+        }
         stage('Build with maven') {
             steps {
                 sh 'cd SampleWebApp && mvn clean install'
